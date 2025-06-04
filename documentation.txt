@@ -1,0 +1,210 @@
+UCSR (University of Cebu Scheduling and Reservation)
+=================================================
+
+PROJECT OVERVIEW
+---------------
+
+UCSR is a web-based scheduling and reservation system designed for the University of Cebu. The application manages tryouts, appointments, and inventory, providing a streamlined interface for administrators and users.
+
+Tech Stack:
+----------
+Frontend:
+- Next.js 15.3.3 (React 19)
+- TailwindCSS
+- NextUI Components
+- Redux Toolkit (State Management)
+- TypeScript
+
+Backend:
+- Supabase (Backend as a Service)
+- PostgreSQL (Database)
+
+Architecture Overview:
+--------------------
+Client Browser
+    ↓
+Next.js Frontend
+    ↓
+Redux Store ← → Supabase Backend
+                    ↓
+              PostgreSQL Database
+
+DATABASE SCHEMA
+--------------
+
+Tables Structure:
+
+1. TryOut Table:
+   - id (integer, Primary Key)
+   - title (string)
+   - schedule_date (datetime)
+   - status (string)
+   - created_at (timestamp)
+
+2. Appointment Table:
+   - id (integer, Primary Key)
+   - tryout_id (integer, Foreign Key to TryOut)
+   - appointment_date (datetime)
+   - status (string)
+   - created_at (timestamp)
+
+3. Inventory Table:
+   - id (integer, Primary Key)
+   - item_name (string)
+   - quantity (integer)
+   - status (string)
+   - created_at (timestamp)
+
+Relationships:
+- TryOut has many Appointments (One-to-Many)
+
+API SPECIFICATION
+---------------
+
+1. Tryout Endpoints:
+
+   POST /api/tryout
+   - Creates new tryout
+   - Request Body:
+     {
+       "title": string,
+       "schedule_date": Date,
+       "status": string
+     }
+   - Response: Created tryout object
+
+   DELETE /api/tryout/{id}
+   - Deletes tryout by ID
+   - Parameters: tryoutId (number)
+   - Response: Deleted tryout object
+
+2. Appointment Endpoints:
+
+   POST /api/appointment
+   - Creates new appointment
+   - Request Body:
+     {
+       "tryout_id": number,
+       "appointment_date": Date,
+       "status": string
+     }
+   - Response: Created appointment object
+
+   DELETE /api/appointment/{id}
+   - Deletes appointment by ID
+   - Parameters: appointmentId (number)
+   - Response: Deleted appointment object
+
+3. Inventory Endpoints:
+
+   POST /api/inventory
+   - Creates new inventory item
+   - Request Body:
+     {
+       "item_name": string,
+       "quantity": number,
+       "status": string
+     }
+   - Response: Created inventory object
+
+   PUT /api/inventory/{id}
+   - Updates inventory item
+   - Parameters: inventoryId (string)
+   - Request Body: Updated inventory object
+   - Response: Updated inventory object
+
+   DELETE /api/inventory/{id}
+   - Deletes inventory item
+   - Parameters: inventoryId (number)
+   - Response: Deleted inventory object
+
+AUTHENTICATION FLOW
+------------------
+
+1. User Access Flow:
+   a. User accesses protected route
+   b. System checks for valid session
+   c. If no session:
+      - Redirect to login page
+      - User enters credentials
+      - Supabase authenticates credentials
+      - Success: Create session and redirect
+      - Failure: Show error message
+   d. If valid session:
+      - Allow access to protected route
+
+SETUP GUIDE
+-----------
+
+Prerequisites:
+- Node.js 18.x or higher
+- npm or yarn package manager
+- Git
+
+Installation Steps:
+
+1. Clone the repository:
+   git clone https://github.com/kenth-jabanes/uscr-jabanes.github.io.git
+   cd uscr-jabanes.github.io
+
+2. Install dependencies:
+   npm install
+
+3. Environment Setup:
+   Create .env.local file with:
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+4. Run Development Server:
+   npm run dev
+   Access at: http://localhost:3333
+
+5. Production Build:
+   npm run build
+   npm start
+
+USAGE GUIDE
+----------
+
+1. Login/Signup:
+   - Access http://localhost:3333
+   - Click "Login" or "Sign Up"
+   - Enter credentials
+
+2. Managing Tryouts:
+   - Navigate to Tryouts section
+   - Click "New Tryout" to create
+   - Fill required information
+   - Use action buttons to edit/delete
+
+3. Managing Appointments:
+   - Go to Appointments section
+   - Select tryout for appointment
+   - Fill appointment details
+   - Manage using action buttons
+
+4. Inventory Management:
+   - Access Inventory section
+   - Add new items via "New Item"
+   - Update quantities
+   - Remove items as needed
+
+TESTING
+-------
+
+Run tests (when implemented):
+npm run test
+
+CONTRIBUTING
+-----------
+
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+LICENSE
+-------
+
+This project is private and proprietary to the University of Cebu. 
